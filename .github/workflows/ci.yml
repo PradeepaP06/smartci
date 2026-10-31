@@ -1,5 +1,5 @@
 
-name: Smart Build Cache CI
+name: Dynamic Test Subset Routing
 
 on:
   push:
@@ -20,16 +20,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Cache Python dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Select and run relevant tests
         run: |
-          set -o pipefail
-          pytest 2>&1 | tee build.log
+          python scripts/select_tests.py \
+            ${{ github.event.before }} \
+            ${{ github.sha }}
