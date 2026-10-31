@@ -10,3 +10,4 @@ class Inventory:
         if self.stock.get(name, 0) < qty:
             raise ValueError("not enough stock")
         self.stock[name] -= qty
+# Lab 3: Inventory routing verification
